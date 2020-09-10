@@ -18,7 +18,15 @@
               <delivery-address @delivery="dodeliver" :res="res"></delivery-address>
             </div>
 
-              <b-button @click="estimate" v-show="this.pickup != null && this.delivery != null" size="lg">Estimate Price</b-button>
+            <b-button @click="estimate" v-show="this.pickup != null && this.delivery != null" size="lg">Estimate Price</b-button>
+
+
+            <b-list-group class="mt-3 mb-5" v-if="respondent != null">
+              <b-list-group-item>Distance: {{ respondent.distance }} KM</b-list-group-item>
+              <b-list-group-item>Time: {{ respondent.time }} MINS</b-list-group-item>
+              <b-list-group-item>Fare: ₦{{ respondent.fare }}</b-list-group-item>
+            </b-list-group>  
+            
           </div>
         </b-col>
         <b-col></b-col>
@@ -44,7 +52,8 @@ export default {
       return {
         pickup: null,
         res: '',
-        delivery: null
+        delivery: null,
+        respondent: null
       }
   },
   methods: {
@@ -53,8 +62,10 @@ export default {
       this.pickup = res
     },
     estimate(){
+      console.log(process.env.VUE_APP_GOKADA)
+      this.respondent = null
       let forms = {
-        api_key: '2m7kdxnQSOjov7eIETMawpmeVtoMUlAwnAAdW40jhCbG5P2YzNENJpJmdCPA_test',
+        api_key: process.env.VUE_APP_GOKADA,
         pickup_latitude: this.pickup.lat,
         pickup_longitude: this.pickup.lng,
         delivery_latitude: this.delivery.lat,
@@ -67,7 +78,9 @@ export default {
                 }
             })
             .then((response) => {
-                console.lo(response)
+              this.respondent = response.data
+              console.log(response)
+
             })
             .catch((error) => {
                 console.log(error);

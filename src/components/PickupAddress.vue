@@ -30,7 +30,7 @@ export default {
             axios.get('https://maps.googleapis.com/maps/api/geocode/json',{
                 params:{
                     address: this.address,
-                    key: 'AIzaSyCNY_fXAIwvCSusE-vEhL2zOdNS53Kzj2M'
+                    key: process.env.VUE_APP_GOOGLE
                 }
             })
             .then((response) => {
